@@ -10,7 +10,7 @@
     if (i >= typedText.length) {
       return ''
     }
-    return typedText[i] == char ? 'correct' : 'incorrect'
+    return typedText[i] === char ? 'correct' : 'incorrect'
   }
 </script>
 
@@ -34,44 +34,47 @@
 </div>
 
 <style>
-.typing-container {
-  position: relative;
-  width: 600px;
-  margin: 2rem auto;
-}
-
-.highlighted-text {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 0.5rem;
-  font-size: 1.2rem;
-  white-space: pre;
-  pointer-events: none;
-  color: #aaa;
-}
-
-.highlighted-text .correct {
-  color: black;
-  font-weight: bold;
-}
-
-.highlighted-text .incorrect {
-  background-color: red;
-  font-weight: bold;
-}
-
-.typing-input {
-  width: 100%;
-  padding: 0.5rem;
-  font-size: 1.2rem;
-  background: transparent;
-  color: transparent;
-  outline: none;
-  caret-color: transparent;
-  resize: none;
-  overflow: hidden;
-  border: none;
-}
+  .typing-container {
+    position: relative;
+    width: 800px;
+    margin: 50px auto;
+    font-size: 28px;
+    font-family: monospace;
+  }
+  .highlighted-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none; /* Allows clicking through to input */
+    color: gray;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  .highlighted-text .correct {
+    font-weight: bold;
+    color: black;
+  }
+  .highlighted-text .incorrect {
+    color: black;
+    font-weight: bold;
+    background-color: red;
+  }
+  .typing-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: transparent;
+    font-size: 28px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    outline: none;
+    caret-color: transparent; /* hide carret */
+    resize: none;
+  }
 </style>
