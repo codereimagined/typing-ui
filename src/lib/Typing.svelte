@@ -1,5 +1,5 @@
 <script>
-  let targetText = 'the quick brown fox jumps over the lazy dog';
+  export let targetText;
   let typedText = '';
 
   function handleInput(e) {
@@ -26,6 +26,11 @@
   <textarea
     bind:value={typedText}
     on:input={handleInput}
+    on:mousedown|preventDefault
+    on:mouseup|preventDefault
+    on:click|preventDefault
+    on:mousemove|preventDefault
+    on:selectstart|preventDefault
     class="typing-input"
     spellcheck="false"
     autofocus
