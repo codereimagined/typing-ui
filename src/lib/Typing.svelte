@@ -1,9 +1,19 @@
 <script>
-  export let targetText;
+  export let onFinish;
+  export let onBackspace;
+  let targetText = onFinish();
   let typedText = '';
 
   function handleInput(e) {
+    if (e.inputType  === 'deleteContentBackward' && typedText.length === 0) {
+      targetText = onBackspace();
+      typedText = targetText;
+    }
     typedText = e.target.value;
+    if (typedText.length === targetText.length) {
+      targetText = onFinish();
+      typedText = '';
+    }
   }
 
   function getStyle(char, i) {
