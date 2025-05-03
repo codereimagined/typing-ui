@@ -7,6 +7,7 @@
   function handleInput(e) {
     if (e.inputType  === 'deleteContentBackward' && typedText.length === 0) {
       onBackspace();
+      return; // Prevent backspace from deleting text in the previous input
     }
     typedText = e.target.value;
     if (typedText.length === targetText.length) {
@@ -19,6 +20,12 @@
       return ''
     }
     return typedText[i] === char ? 'correct' : 'incorrect'
+  }
+
+  function keepFocus() {
+    setTimeout(() => {
+      document.getElementsByClassName('typing-input')[0]?.focus();
+    }, 0);
   }
 </script>
 
@@ -39,6 +46,7 @@
     on:click|preventDefault
     on:mousemove|preventDefault
     on:selectstart|preventDefault
+    on:blur={keepFocus}
     class="typing-input"
     spellcheck="false"
     autofocus
@@ -50,7 +58,7 @@
   .typing-container {
     position: relative;
     width: 800px;
-    margin: 50px auto;
+    margin: .5em auto;
     font-size: 28px;
     font-family: monospace;
     padding: .5em;
@@ -90,7 +98,7 @@
     white-space: pre-wrap;
     word-wrap: break-word;
     outline: none;
-    caret-color: red; /* hide carret */
+    caret-color: black;
     resize: none;
   }
 </style>

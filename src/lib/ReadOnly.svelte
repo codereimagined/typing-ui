@@ -24,7 +24,7 @@
   .typing-container {
     position: relative;
     width: 800px;
-    margin: 50px auto;
+    margin: .5em auto;
     font-size: 28px;
     font-family: monospace;
     padding: .5em;
