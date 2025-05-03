@@ -1,18 +1,16 @@
 <script>
   export let onFinish;
   export let onBackspace;
-  let targetText = onFinish();
-  let typedText = '';
+  export let targetText;
+  export let typedText;
 
   function handleInput(e) {
     if (e.inputType  === 'deleteContentBackward' && typedText.length === 0) {
-      targetText = onBackspace();
-      typedText = targetText;
+      onBackspace();
     }
     typedText = e.target.value;
     if (typedText.length === targetText.length) {
-      targetText = onFinish();
-      typedText = '';
+      onFinish();
     }
   }
 
@@ -55,6 +53,7 @@
     margin: 50px auto;
     font-size: 28px;
     font-family: monospace;
+    padding: .5em;
   }
   .highlighted-text {
     position: absolute;
@@ -66,6 +65,7 @@
     color: gray;
     white-space: pre-wrap;
     word-wrap: break-word;
+    text-align: left;
   }
   .highlighted-text .correct {
     font-weight: bold;
@@ -80,6 +80,7 @@
     position: absolute;
     top: 0;
     left: 0;
+    right: 0;
     width: 100%;
     border: none;
     background: transparent;
@@ -89,7 +90,7 @@
     white-space: pre-wrap;
     word-wrap: break-word;
     outline: none;
-    caret-color: transparent; /* hide carret */
+    caret-color: red; /* hide carret */
     resize: none;
   }
 </style>

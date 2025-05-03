@@ -1,14 +1,16 @@
 <script lang="ts">
   import Typing from './lib/Typing.svelte'
+  import ReadOnly from './lib/ReadOnly.svelte'
 
   const text = [
-    "a quick brown fox jumped over the brown dog",
-    "type something from outside...",
-    "more typing of cool text",
-    "the story of Oliver continus...",
-    "end of the story!"
+    { target: "a quick brown fox jumped over the lazy dog", typed: "" },
+    { target: "type something from outside...", typed: "" },
+    { target: "more typing of cool text", typed: "" },
+    { target: "the story of Oliver continus...", typed: ""},
+    { target: "end of the story!", typed: "" }
   ];
   let index = 0;
+
   function focusNext() {
     if (index < text.length) {
       index += 1;
@@ -29,14 +31,12 @@
 </script>
 
 <main>
-  {#each text.slice(0, index - 1) as item}
-    <p>{item}</p>
+  {#each text.slice(0, index) as item}
+    <ReadOnly targetText="{item.target}" typedText="{item.typed}" />
   {/each}
-  <div class="card">
-    <Typing onFinish={focusNext} onBackspace={focusPrev} />
-  </div>
-  {#each text.slice(index) as item}
-    <p>{item}</p>
+  <Typing onFinish={focusNext} onBackspace={focusPrev} bind:targetText="{text[index].target}" bind:typedText="{text[index].typed}" />
+  {#each text.slice(index+1) as item}
+    <ReadOnly targetText="{item.target}" typedText="{item.typed}" />
   {/each}
 </main>
 
