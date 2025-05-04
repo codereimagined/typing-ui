@@ -32,7 +32,7 @@
   {#each text.slice(0, index) as item}
     <ReadOnly targetText="{item.target}" typedText="{item.typed}" />
   {/each}
-  <Typing onFinish={focusNext} onBackspace={focusPrev} bind:targetText="{text[index].target}" bind:typedText="{text[index].typed}" />
+  <Typing switchNext={focusNext} switchPrevious={focusPrev} bind:targetText="{text[index].target}" bind:typedText="{text[index].typed}" />
   {#each text.slice(index+1) as item}
     <ReadOnly targetText="{item.target}" typedText="{item.typed}" />
   {/each}

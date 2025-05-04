@@ -1,21 +1,26 @@
-<script>
-  export let onFinish;
-  export let onBackspace;
-  export let targetText;
-  export let typedText;
+<script lang="ts">
+  export let switchNext = () =>  {};
+  export let switchPrevious = () =>  {};
+  export let targetText = '';
+  export let typedText = '';
+  let textAreaElement: HTMLTextAreaElement;
 
-  function handleInput(e) {
-    if (e.inputType  === 'deleteContentBackward' && typedText.length === 0) {
-      onBackspace();
-      return; // Prevent backspace from deleting text in the previous input
+  function handleInput(e: InputEvent) {
+      typedText = (e.target as HTMLTextAreaElement)?.value;
+      if (typedText.length === targetText.length) {
+        switchNext();
+      }
     }
-    typedText = e.target.value;
-    if (typedText.length === targetText.length) {
-      onFinish();
-    }
+
+  function handleKeyDown(e: KeyboardEvent) {
+      // Handle backspace needs to be in "on:keydown" as "on:input" won't trigger if textarea is empty
+      if (e.key === 'Backspace' && typedText.length === 0) {
+        switchPrevious();
+        console.log('backspace inside keydown');
+      }
   }
 
-  function getStyle(char, i) {
+  function getStyle(char: string, i: number) {
     if (i >= typedText.length) {
       return ''
     }
@@ -24,7 +29,7 @@
 
   function keepFocus() {
     setTimeout(() => {
-      document.getElementsByClassName('typing-input')[0]?.focus();
+      textAreaElement?.focus();
     }, 0);
   }
 </script>
@@ -39,8 +44,10 @@
   </div>
   
   <textarea
+    bind:this={textAreaElement}
     bind:value={typedText}
     on:input={handleInput}
+    on:keydown={handleKeyDown}
     on:mousedown|preventDefault
     on:mouseup|preventDefault
     on:click|preventDefault
