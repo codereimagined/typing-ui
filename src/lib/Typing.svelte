@@ -9,6 +9,7 @@
       typedText = (e.target as HTMLTextAreaElement)?.value;
       if (typedText.length === targetText.length) {
         switchNext();
+        textAreaElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }
 
@@ -16,7 +17,7 @@
       // Handle backspace needs to be in "on:keydown" as "on:input" won't trigger if textarea is empty
       if (e.key === 'Backspace' && typedText.length === 0) {
         switchPrevious();
-        console.log('backspace inside keydown');
+        textAreaElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
   }
 
