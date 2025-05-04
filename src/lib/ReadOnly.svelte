@@ -23,7 +23,7 @@
 <style>
   .typing-container {
     position: relative;
-    width: 800px;
+    width: 1200px;
     margin: .5em auto;
     font-size: 28px;
     font-family: monospace;
