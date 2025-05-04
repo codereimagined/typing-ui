@@ -5,7 +5,7 @@
   export let typedText = '';
   let textAreaElement: HTMLTextAreaElement;
 
-  function handleInput(e: InputEvent) {
+  function handleInput(e: Event) {
       typedText = (e.target as HTMLTextAreaElement)?.value;
       if (typedText.length === targetText.length) {
         switchNext();
