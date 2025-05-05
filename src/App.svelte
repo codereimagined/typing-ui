@@ -1,22 +1,30 @@
 <script lang="ts">
   import Typing from './lib/Typing.svelte'
   import ReadOnly from './lib/ReadOnly.svelte'
+  import ChapterSelect from "./lib/ChapterSelect.svelte";
 
   let textObjects = [ // Default text if loading failed
-    { target: "a quick brown fox jumped over the lazy dog ", typed: "" },
-    { target: "type something from outside... ", typed: "" },
-    { target: "more typing of cool text ", typed: "" },
-    { target: "the story of Oliver continues... ", typed: ""},
-    { target: "end of the story!", typed: "" }
+    { target: "The quick brown fox jumped over the lazy dog ", typed: "" },
+    { target: "End of the story!", typed: "" }
   ];
   let index = 0;
 
-  fetch('oliver-twist-chapter-i.txt')
+  let chapters = [
+    {label: "Chapter 1", value: "oliver-twist-chapter-1.txt"},
+    {label: "Chapter 2", value: "oliver-twist-chapter-2.txt"},
+    {label: "Chapter 3", value: "oliver-twist-chapter-3.txt"},
+    {label: "Chapter 4", value: "oliver-twist-chapter-4.txt"},
+    {label: "Chapter 5", value: "oliver-twist-chapter-5.txt"}
+  ]
+  let selectedChapter = chapters[0].value;
+
+  $: fetch(selectedChapter)
     .then(response => response.text())
     .then(text => {
       textObjects = text.split('\n').map(line => {
         return { target: line + " ", typed: "" }
-      })
+      });
+      index = 0;
     })
     .catch(error => {
       alert("Error fetching text");
@@ -41,6 +49,7 @@
 </script>
 
 <main>
+  <ChapterSelect bind:selectedChapter={selectedChapter} options={chapters}/>
   {#each textObjects.slice(0, index) as item}
     <ReadOnly targetText="{item.target}" typedText="{item.typed}" />
   {/each}

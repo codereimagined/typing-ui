@@ -30,6 +30,11 @@
 
   function keepFocus() {
     setTimeout(() => {
+      // Only allowing to focus on Chapter selection
+      const selectedElement = document.activeElement?.tagName;
+      if (selectedElement === 'SELECT') {
+          return;
+      }
       textAreaElement?.focus();
     }, 0);
   }
