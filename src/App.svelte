@@ -9,13 +9,10 @@
   ];
   let index = 0;
 
-  let chapters = [
-    {label: "Chapter 1", value: "oliver-twist-chapter-1.txt"},
-    {label: "Chapter 2", value: "oliver-twist-chapter-2.txt"},
-    {label: "Chapter 3", value: "oliver-twist-chapter-3.txt"},
-    {label: "Chapter 4", value: "oliver-twist-chapter-4.txt"},
-    {label: "Chapter 5", value: "oliver-twist-chapter-5.txt"}
-  ]
+  let chapters = [];
+  for (let i = 1; i <= 53; i++) { // Here 53 is a number of chapters
+      chapters.push({label: `Chapter ${i}`, value: `oliver-twist/chapter-${i}.txt`});
+  }
   let selectedChapter = chapters[0].value;
 
   $: fetch(selectedChapter)

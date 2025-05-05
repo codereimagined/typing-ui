@@ -1,12 +1,14 @@
-<script>
+<script lang="ts">
   export let targetText = '';
   export let typedText = '';
 
-  function getStyle(char, i) {
+  function getStyle(char: string, i: number) {
     if (i >= typedText.length) {
       return ''
     }
-    return typedText[i] === char ? 'correct' : 'incorrect'
+    let typedChar = typedText[i];
+    if (typedChar === char) { return 'correct' }
+    return /\s/.test(typedChar) && /\s/.test(char) ? 'correct' : 'incorrect';
   }
 </script>
 

@@ -22,10 +22,12 @@
   }
 
   function getStyle(char: string, i: number) {
-    if (i >= typedText.length) {
-      return ''
-    }
-    return typedText[i] === char ? 'correct' : 'incorrect'
+      if (i >= typedText.length) {
+          return ''
+      }
+      let typedChar = typedText[i];
+      if (typedChar === char) { return 'correct' }
+      return /\s/.test(typedChar) && /\s/.test(char) ? 'correct' : 'incorrect';
   }
 
   function keepFocus() {
