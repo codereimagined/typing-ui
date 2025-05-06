@@ -1,7 +1,7 @@
 <script lang="ts">
   import Typing from './lib/Typing.svelte'
   import ReadOnly from './lib/ReadOnly.svelte'
-  import ChapterSelect from "./lib/ChapterSelect.svelte";
+  import SidePanel from "./lib/SidePanel.svelte";
 
   let textObjects = [ // Default text if loading failed
     { target: "The quick brown fox jumped over the lazy dog ", typed: "" },
@@ -46,7 +46,7 @@
 </script>
 
 <main>
-  <ChapterSelect bind:selectedChapter={selectedChapter} options={chapters}/>
+  <SidePanel bind:selectedChapter={selectedChapter} chapters={chapters}/>
   {#each textObjects.slice(0, index) as item}
     <ReadOnly targetText="{item.target}" typedText="{item.typed}" />
   {/each}

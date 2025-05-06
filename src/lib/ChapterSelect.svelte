@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let options: { label: string; value: string }[] = [];
+  export let chapters: { label: string; value: string }[] = [];
   export let selectedChapter: string = '';
 </script>
 
@@ -8,8 +8,8 @@
     <option disabled selected={selectedChapter === ''} value="">
       Jump to a chapter...
     </option>
-    {#each options as option}
-      <option value={option.value}>{option.label}</option>
+    {#each chapters as item}
+      <option value={item.value}>{item.label}</option>
     {/each}
   </select>
 </div>
