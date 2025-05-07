@@ -46,11 +46,11 @@
 </script>
 
 <main>
-  <SidePanel bind:selectedChapter={selectedChapter} chapters={chapters}/>
+  <SidePanel bind:selectedChapter={selectedChapter} chapters={chapters} />
   {#each textObjects.slice(0, index) as item}
     <ReadOnly targetText="{item.target}" typedText="{item.typed}" />
   {/each}
-  <Typing switchNext={focusNext} switchPrevious={focusPrev} bind:targetText="{textObjects[index].target}" bind:typedText="{textObjects[index].typed}" />
+  <Typing switchNext={focusNext} switchPrevious={focusPrev} targetText="{textObjects[index].target}" bind:typedText="{textObjects[index].typed}" />
   {#each textObjects.slice(index+1) as item}
     <ReadOnly targetText="{item.target}" typedText="{item.typed}" />
   {/each}

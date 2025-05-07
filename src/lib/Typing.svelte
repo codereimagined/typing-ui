@@ -1,33 +1,58 @@
 <script lang="ts">
+  import { message } from './sharedStore';
   export let switchNext = () =>  {};
   export let switchPrevious = () =>  {};
   export let targetText = '';
   export let typedText = '';
+  let hitMissTime: { value: boolean; time: number }[] = [];
   let textAreaElement: HTMLTextAreaElement;
 
-  function handleInput(e: Event) {
-      typedText = (e.target as HTMLTextAreaElement)?.value;
-      if (typedText.length === targetText.length) {
-        switchNext();
-        textAreaElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
+  function handleInput(e: InputEvent) {
+    typedText = (e.target as HTMLTextAreaElement)?.value;
+    if (typedText.length === targetText.length) {
+      switchNext();
+      textAreaElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
+    if (e.inputType !== 'deleteContentBackward') {
+      appendHitMissTime();
+    }
+  }
+
+  function appendHitMissTime() {
+    let typedCharPosition = typedText.length - 1;
+    let hitOrMiss = typedText[typedCharPosition] === targetText[typedCharPosition];
+    let currentTime = new Date().getTime();
+    if (currentTime - (hitMissTime.at(-1)?.time || 0) > 5000) {
+      hitMissTime = [];
+    }
+    hitMissTime.push({value: hitOrMiss, time: currentTime});
+
+    // Compute speed
+    let startTime = hitMissTime[0].time;
+    let correctCount = hitMissTime.filter(x => x.value).length;
+    let totalCount = hitMissTime.length;
+    let speedCharsPerMin = totalCount / (new Date().getTime() - startTime) * 1000 * 60;
+    let speedWordsPerMin = speedCharsPerMin / 5; // divide the average word length for English
+    if (hitMissTime.length % 10 === 9) {
+      message.set(`Speed: ${speedWordsPerMin.toFixed(2)} words/min, accuracy: ${(correctCount/totalCount).toFixed(2)}, streak: ${totalCount}`);
+    }
+  }
 
   function handleKeyDown(e: KeyboardEvent) {
-      // Handle backspace needs to be in "on:keydown" as "on:input" won't trigger if textarea is empty
-      if (e.key === 'Backspace' && typedText.length === 0) {
-        switchPrevious();
-        textAreaElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
+    // Handle backspace needs to be in "on:keydown" as "on:input" won't trigger if textarea is empty
+    if (e.key === 'Backspace' && typedText.length === 0) {
+      switchPrevious();
+      textAreaElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   }
 
   function getStyle(char: string, i: number) {
-      if (i >= typedText.length) {
-          return ''
-      }
-      let typedChar = typedText[i];
-      if (typedChar === char) { return 'correct' }
-      return /\s/.test(typedChar) && /\s/.test(char) ? 'correct' : 'incorrect';
+    if (i >= typedText.length) {
+      return ''
+    }
+    let typedChar = typedText[i];
+    if (typedChar === char) { return 'correct' }
+    return /\s/.test(typedChar) && /\s/.test(char) ? 'correct' : 'incorrect';
   }
 
   function keepFocus() {
@@ -35,7 +60,7 @@
       // Only allowing to focus on Chapter selection
       const selectedElement = document.activeElement?.tagName;
       if (selectedElement === 'SELECT') {
-          return;
+        return;
       }
       textAreaElement?.focus();
     }, 0);
@@ -74,7 +99,7 @@
     position: relative;
     width: 1200px;
     margin: .5em auto;
-    font-size: 28px;
+    font-size: 24px;
     font-family: monospace;
     padding: .5em;
   }
@@ -108,7 +133,7 @@
     border: none;
     background: transparent;
     color: transparent;
-    font-size: 28px;
+    font-size: 24px;
     font-family: monospace;
     white-space: pre-wrap;
     word-wrap: break-word;

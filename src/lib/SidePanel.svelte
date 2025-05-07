@@ -1,5 +1,6 @@
 <script lang="ts">
   import ChapterSelect from './ChapterSelect.svelte';
+  import Speedometer from "./Speedometer.svelte";
 
   export let chapters: { label: string; value: string }[] = [];
   export let selectedChapter: string = '';
@@ -48,6 +49,7 @@
     <div class="content">
       <h2>Oliver Twist</h2>
       <ChapterSelect bind:selectedChapter={selectedChapter} chapters={chapters}/>
+      <Speedometer />
     </div>
   {/if}
 </div>
