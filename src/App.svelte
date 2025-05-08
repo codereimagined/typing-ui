@@ -13,7 +13,7 @@
   for (let i = 1; i <= 53; i++) { // Here 53 is a number of chapters
       chapters.push({label: `Chapter ${i}`, value: `oliver-twist/chapter-${i}.txt`});
   }
-  let selectedChapter = chapters[0].value;
+  let selectedChapter = localStorage.getItem("selectedChapter") ?? "oliver-twist/chapter-1.txt";
 
   $: fetch(selectedChapter)
     .then(response => response.text())
@@ -21,7 +21,8 @@
       textObjects = text.split('\n').map(line => {
         return { target: line + " ", typed: "" }
       });
-      index = 0;
+      localStorage.setItem("selectedChapter", selectedChapter);
+      index = parseInt(localStorage.getItem(selectedChapter) || "0", 10);
     })
     .catch(error => {
       alert("Error fetching text");
@@ -31,6 +32,7 @@
   function focusNext() {
     if (index < textObjects.length - 1) {
       index += 1;
+      localStorage.setItem(selectedChapter, index.toString());
     } else {
       alert("The end of the lesson");
     }
@@ -39,6 +41,7 @@
   function focusPrev() {
     if (index > 0) {
       index -= 1;
+      localStorage.setItem(selectedChapter, index.toString());
     } else {
       alert("The beginning of the lesson");
     }
