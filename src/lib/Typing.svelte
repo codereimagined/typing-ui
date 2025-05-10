@@ -15,6 +15,12 @@
     }
     if (e.inputType !== 'deleteContentBackward') {
       appendHitMissTime();
+    } else {
+      // Delete the last correctly typed character on Backspace
+      const index = hitMissTime.findIndex(obj => obj.value === true);
+      if (index !== -1) {
+        hitMissTime.splice(index, 1);
+      }
     }
   }
 
@@ -23,7 +29,7 @@
     let hitOrMiss = typedText[typedCharPosition] === targetText[typedCharPosition];
     let currentTime = new Date().getTime();
     let lastKeyTime = hitMissTime.at(-1)?.time || 0;
-    if (currentTime - (hitMissTime.at(-1)?.time || 0) > 5000) {
+    if (currentTime - lastKeyTime > 5000) {
       if (hitMissTime.length > 10) {
         pastMessages.update(arr => [getStatusMessage(hitMissTime, lastKeyTime), ...arr.slice(0, 10)]);
       }
