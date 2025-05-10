@@ -57,6 +57,7 @@
   {#each textObjects.slice(index+1) as item}
     <ReadOnly targetText="{item.target}" typedText="{item.typed}" />
   {/each}
+  <div class="spacer" style="height: 12rem"></div>
 </main>
 
 <style>
