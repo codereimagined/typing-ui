@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { message } from './sharedStore';
+  import { message, pastMessages } from './sharedStore';
   export let switchNext = () =>  {};
   export let switchPrevious = () =>  {};
   export let targetText = '';
@@ -22,20 +22,31 @@
     let typedCharPosition = typedText.length - 1;
     let hitOrMiss = typedText[typedCharPosition] === targetText[typedCharPosition];
     let currentTime = new Date().getTime();
+    let lastKeyTime = hitMissTime.at(-1)?.time || 0;
     if (currentTime - (hitMissTime.at(-1)?.time || 0) > 5000) {
+      if (hitMissTime.length > 10) {
+        pastMessages.update(arr => [getStatusMessage(hitMissTime, lastKeyTime), ...arr.slice(0, 10)]);
+      }
+      message.set("Keep typing to know your speed and accuracy!");
       hitMissTime = [];
     }
     hitMissTime.push({value: hitOrMiss, time: currentTime});
 
-    // Compute speed
+    if (hitMissTime.length % 10 === 9) {
+      message.set(getStatusMessage(hitMissTime));
+    }
+  }
+
+  function getStatusMessage(hitMissTime: {value: boolean, time: number}[], currentTime?: number) {
+    // Compute speed and accuracy message
+    if (hitMissTime.length === 0) { return '' }
+    if (!currentTime) { currentTime = new Date().getTime() }
     let startTime = hitMissTime[0].time;
     let correctCount = hitMissTime.filter(x => x.value).length;
     let totalCount = hitMissTime.length;
-    let speedCharsPerMin = totalCount / (new Date().getTime() - startTime) * 1000 * 60;
+    let speedCharsPerMin = totalCount / (currentTime - startTime) * 1000 * 60;
     let speedWordsPerMin = speedCharsPerMin / 5; // divide the average word length for English
-    if (hitMissTime.length % 10 === 9) {
-      message.set(`Speed: ${speedWordsPerMin.toFixed(2)} words/min, accuracy: ${(correctCount/totalCount).toFixed(2)}, streak: ${totalCount}`);
-    }
+    return `Speed: ${speedWordsPerMin.toFixed(2)} words/min, accuracy: ${(correctCount/totalCount).toFixed(2)}, streak: ${totalCount}`;
   }
 
   function handleKeyDown(e: KeyboardEvent) {
