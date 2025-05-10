@@ -2,6 +2,7 @@
   import Typing from './lib/Typing.svelte'
   import ReadOnly from './lib/ReadOnly.svelte'
   import SidePanel from "./lib/SidePanel.svelte";
+  import BottomPanel from "./lib/BottomPanel.svelte";
 
   let textObjects = [ // Default text if loading failed
     { target: "The quick brown fox jumped over the lazy dog ", typed: "" },
@@ -50,6 +51,7 @@
 
 <main>
   <SidePanel bind:selectedChapter={selectedChapter} chapters={chapters} />
+  <BottomPanel />
   {#each textObjects.slice(0, index) as item}
     <ReadOnly targetText="{item.target}" typedText="{item.typed}" />
   {/each}
