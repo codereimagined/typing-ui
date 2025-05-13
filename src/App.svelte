@@ -10,20 +10,24 @@
   ];
   let index = 0;
 
-  let chapters = [];
-  for (let i = 1; i <= 53; i++) { // Here 53 is a number of chapters
-      chapters.push({label: `Chapter ${i}`, value: `oliver-twist/chapter-${i}.txt`});
+  let selectedBook = localStorage.getItem("selectedBook") ?? "oliver-twist";
+  let selectedChapter = localStorage.getItem(`${selectedBook}-selectedChapter`) ?? "chapter-1.txt";
+  type BookInfo = {
+      [key: string]: { language: string }
   }
-  let selectedChapter = localStorage.getItem("selectedChapter") ?? "oliver-twist/chapter-1.txt";
 
-  $: fetch(selectedChapter)
+  let booksInfo: BookInfo = {
+      'oliver-twist': {language: 'en_us'},
+      'anna-karenina-part-1': {language: 'ru_ru'},
+    }
+  $: fetch(`${selectedBook}/${selectedChapter}`)
     .then(response => response.text())
     .then(text => {
       textObjects = text.split('\n').map(line => {
         return { target: line + " ", typed: "" }
       });
-      localStorage.setItem("selectedChapter", selectedChapter);
-      index = parseInt(localStorage.getItem(selectedChapter) || "0", 10);
+      localStorage.setItem(`${selectedBook}-selectedChapter`, selectedChapter);
+      index = parseInt(localStorage.getItem(`${selectedBook}-${selectedChapter}`) || "0", 10);
     })
     .catch(error => {
       alert("Error fetching text");
@@ -33,7 +37,7 @@
   function focusNext() {
     if (index < textObjects.length - 1) {
       index += 1;
-      localStorage.setItem(selectedChapter, index.toString());
+      localStorage.setItem(`${selectedBook}-${selectedChapter}`, index.toString());
     } else {
       alert("The end of the lesson");
     }
@@ -42,7 +46,7 @@
   function focusPrev() {
     if (index > 0) {
       index -= 1;
-      localStorage.setItem(selectedChapter, index.toString());
+      localStorage.setItem(`${selectedBook}-${selectedChapter}`, index.toString());
     } else {
       alert("The beginning of the lesson");
     }
@@ -50,8 +54,8 @@
 </script>
 
 <main>
-  <SidePanel bind:selectedChapter={selectedChapter} chapters={chapters} />
-  <BottomPanel />
+  <SidePanel bind:selectedBook={selectedBook} bind:selectedChapter={selectedChapter} />
+  <BottomPanel language={booksInfo[selectedBook].language}/>
   {#each textObjects.slice(0, index) as item}
     <ReadOnly targetText="{item.target}" typedText="{item.typed}" />
   {/each}

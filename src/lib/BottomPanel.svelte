@@ -1,6 +1,7 @@
 <script lang="ts">
   import Keyboard from "./Keyboard.svelte";
 
+  export let language = 'en_us'
   let isOpen = false;
 
   function togglePanel() {
@@ -42,7 +43,7 @@
   </button>
   {#if isOpen}
     <div class="content">
-      <Keyboard />
+      <Keyboard language={language}/>
     </div>
   {/if}
 </div>

@@ -2,7 +2,7 @@
   import ChapterSelect from './ChapterSelect.svelte';
   import Speedometer from "./Speedometer.svelte";
 
-  export let chapters: { label: string; value: string }[] = [];
+  export let selectedBook: string = '';
   export let selectedChapter: string = '';
 
   let isOpen = true;
@@ -47,8 +47,7 @@
   </button>
   {#if isOpen}
     <div class="content">
-      <h2>Oliver Twist</h2>
-      <ChapterSelect bind:selectedChapter={selectedChapter} chapters={chapters}/>
+      <ChapterSelect bind:selectedBook={selectedBook} bind:selectedChapter={selectedChapter} />
       <Speedometer />
     </div>
   {/if}
