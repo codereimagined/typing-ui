@@ -5,8 +5,8 @@
   import BottomPanel from "./lib/BottomPanel.svelte";
 
   let textObjects = [ // Default text if loading failed
-    { target: "The quick brown fox jumped over the lazy dog ", typed: "" },
-    { target: "End of the story!", typed: "" }
+    { target: "The quick brown fox jumped over the lazy dog ", typed: "", fixIndexes: new Set<number>() },
+    { target: "End of the story!", typed: "", fixIndexes: new Set<number>() }
   ];
   let index = 0;
 
@@ -24,7 +24,7 @@
     .then(response => response.text())
     .then(text => {
       textObjects = text.split('\n').map(line => {
-        return { target: line + " ", typed: "" }
+        return { target: line + " ", typed: "", fixIndexes: new Set<number>() }
       });
       localStorage.setItem(`${selectedBook}-selectedChapter`, selectedChapter);
       index = parseInt(localStorage.getItem(`${selectedBook}-${selectedChapter}`) || "0", 10);
@@ -57,11 +57,15 @@
   <SidePanel bind:selectedBook={selectedBook} bind:selectedChapter={selectedChapter} />
   <BottomPanel language={booksInfo[selectedBook].language}/>
   {#each textObjects.slice(0, index) as item}
-    <ReadOnly targetText="{item.target}" typedText="{item.typed}" />
+    <ReadOnly targetText="{item.target}" typedText="{item.typed}" fixIndexes="{item.fixIndexes}"/>
   {/each}
-  <Typing switchNext={focusNext} switchPrevious={focusPrev} targetText="{textObjects[index].target}" bind:typedText="{textObjects[index].typed}" />
+  <Typing switchNext={focusNext}
+          switchPrevious={focusPrev}
+          targetText="{textObjects[index].target}"
+          bind:typedText="{textObjects[index].typed}"
+          bind:fixIndexes="{textObjects[index].fixIndexes}" />
   {#each textObjects.slice(index+1) as item}
-    <ReadOnly targetText="{item.target}" typedText="{item.typed}" />
+    <ReadOnly targetText="{item.target}" />
   {/each}
   <div class="spacer" style="height: 12rem"></div>
 </main>

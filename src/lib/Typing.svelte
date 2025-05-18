@@ -4,6 +4,8 @@
   export let switchPrevious = () =>  {};
   export let targetText = '';
   export let typedText = '';
+  export let fixIndexes = new Set<number>();
+
   let hitMissTime: { value: boolean; time: number }[] = [];
   let textAreaElement: HTMLTextAreaElement;
 
@@ -27,6 +29,9 @@
   function appendHitMissTime() {
     let typedCharPosition = typedText.length - 1;
     let hitOrMiss = typedText[typedCharPosition] === targetText[typedCharPosition];
+    if (!hitOrMiss) {
+      fixIndexes.add(typedCharPosition);
+    }
     let currentTime = new Date().getTime();
     let lastKeyTime = hitMissTime.at(-1)?.time || 0;
     if (currentTime - lastKeyTime > 5000) {
@@ -64,12 +69,13 @@
   }
 
   function getStyle(char: string, i: number) {
+    let correctOrFix = fixIndexes.has(i) ? 'fixed' : 'correct';
     if (i >= typedText.length) {
       return ''
     }
     let typedChar = typedText[i];
-    if (typedChar === char) { return 'correct' }
-    return /\s/.test(typedChar) && /\s/.test(char) ? 'correct' : 'incorrect';
+    if (typedChar === char) { return correctOrFix }
+    return /\s/.test(typedChar) && /\s/.test(char) ? correctOrFix : 'incorrect';
   }
 
   function keepFocus() {
@@ -135,6 +141,11 @@
   .highlighted-text .correct {
     font-weight: bold;
     color: black;
+  }
+  .highlighted-text .fixed {
+    font-weight: bold;
+    color: black;
+    background-color: lightgray;
   }
   .highlighted-text .incorrect {
     color: black;

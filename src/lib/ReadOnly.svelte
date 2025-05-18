@@ -1,14 +1,16 @@
 <script lang="ts">
   export let targetText = '';
   export let typedText = '';
+  export let fixIndexes = new Set<number>();
 
   function getStyle(char: string, i: number) {
+    let correctOrFix = fixIndexes.has(i) ? 'fixed' : 'correct';
     if (i >= typedText.length) {
       return ''
     }
     let typedChar = typedText[i];
-    if (typedChar === char) { return 'correct' }
-    return /\s/.test(typedChar) && /\s/.test(char) ? 'correct' : 'incorrect';
+    if (typedChar === char) { return correctOrFix }
+    return /\s/.test(typedChar) && /\s/.test(char) ? correctOrFix : 'incorrect';
   }
 </script>
 
@@ -46,6 +48,11 @@
   .highlighted-text .correct {
     font-weight: bold;
     color: black;
+  }
+  .highlighted-text .fixed {
+    font-weight: bold;
+    color: black;
+    background-color: lightgray;
   }
   .highlighted-text .incorrect {
     color: black;
