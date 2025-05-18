@@ -1,11 +1,8 @@
 <script lang="ts">
-  import ChapterSelect from './ChapterSelect.svelte';
-  import Speedometer from "./Speedometer.svelte";
+  import Keyboard from "./Keyboard.svelte";
 
-  export let selectedBook: string = '';
-  export let selectedChapter: string = '';
-
-  let isOpen = true;
+  export let language = 'en_us'
+  let isOpen = false;
 
   function togglePanel() {
     isOpen = !isOpen;
@@ -13,14 +10,13 @@
 </script>
 
 <style>
-  .side-panel {
+  .bottom-panel {
     position: fixed;
-    top: 0;
-    right: 0;
-    height: 100vh;
+    bottom: 0;
+    width: 60%;
     background-color: #f4f4f4;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    transition: width 0.3s ease;
+    transition: height 0.3s ease;
     overflow: hidden;
     z-index: 1000;
   }
@@ -31,8 +27,8 @@
 
   .toggle-btn {
     position: fixed;
-    top: 10px;
-    right: 10px;
+    bottom: 10px;
+    left: 10px;
     width: 30px;
     height: 30px;
     border: none;
@@ -41,14 +37,13 @@
   }
 </style>
 
-<div class="side-panel" style="width: {isOpen ? '250px' : '0'}">
+<div class="bottom-panel" style="height: {isOpen ? '220px' : '0'}">
   <button class="toggle-btn" on:click={togglePanel}>
-    {isOpen ? '→': '←' }
+    {isOpen ? '↓️': '⌨️' }
   </button>
   {#if isOpen}
     <div class="content">
-      <ChapterSelect bind:selectedBook={selectedBook} bind:selectedChapter={selectedChapter} />
-      <Speedometer />
+      <Keyboard language={language}/>
     </div>
   {/if}
 </div>
