@@ -12,3 +12,32 @@ body {
   padding: 2rem;
   text-align: center;
 }
+
+:root {
+  --bg-color: #ffffff;
+  --bg-side-color: #f4f4f4;
+  --text-color: #000000;
+  --link-color: #0066cc;
+  --caret-color: #000000;
+  --type-color: #000000;
+  --fixed-bg-color: lightgrey;
+}
+
+.dark {
+  --bg-color: #323437;
+  --bg-side-color: #3A3D41;
+  --text-color: #e0e0e0;
+  --link-color: #90CAF9;
+  --caret-color: #FFD700;
+  --type-color: #ffffff;
+  --fixed-bg-color: darkgrey;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+a {
+  color: var(--link-color);
+}

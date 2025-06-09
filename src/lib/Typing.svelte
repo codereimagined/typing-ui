@@ -140,15 +140,15 @@
   }
   .highlighted-text .correct {
     font-weight: bold;
-    color: black;
+    color: var(--type-color);
   }
   .highlighted-text .fixed {
     font-weight: bold;
-    color: black;
-    background-color: lightgray;
+    color: var(--type-color);
+    background-color: var(--fixed-bg-color);
   }
   .highlighted-text .incorrect {
-    color: black;
+    color: var(--type-color);
     font-weight: bold;
     background-color: red;
   }
@@ -166,7 +166,7 @@
     white-space: pre-wrap;
     word-wrap: break-word;
     outline: none;
-    caret-color: black;
     resize: none;
+    caret-color: var(--caret-color);
   }
 </style>

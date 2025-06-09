@@ -1,6 +1,7 @@
 <script lang="ts">
   import ChapterSelect from './ChapterSelect.svelte';
   import Speedometer from "./Speedometer.svelte";
+  import DarkMode from "./DarkMode.svelte";
 
   export let selectedBook: string = '';
   export let selectedChapter: string = '';
@@ -18,7 +19,7 @@
     top: 0;
     right: 0;
     height: 100vh;
-    background-color: #f4f4f4;
+    background-color: var(--bg-side-color);
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     transition: width 0.3s ease;
     overflow: hidden;
@@ -46,6 +47,7 @@
     {isOpen ? '→': '←' }
   </button>
   {#if isOpen}
+    <DarkMode />
     <div class="content">
       <ChapterSelect bind:selectedBook={selectedBook} bind:selectedChapter={selectedChapter} />
       <Speedometer />
